@@ -1,12 +1,64 @@
 
-# 9/11/23
+# 10/6/23
 
 export PYTHONPATH="${PWD}/../:$PYTHONPATH"
 conda activate JaxSeq2
 
-export GCP_PATH=young-nlp-us-e1/experiment_output/young/easy_lm/open_llama_data_comparison_1/d496a4bd6cfc4d2692b6aeef34ba731d
-export LOCAL_PATH=/shared/csnell/data_study/7B_v2_data
-for STEP in 17600
+# openllama 3B_v2
+
+export GCP_PATH=young-nlp-us-e1/experiment_output/young/easy_lm/open_llama_2/e82faca15ebb42d59ab0638fdf68b42e
+export LOCAL_PATH=/shared/csnell/openllama/3B_v2
+for STEP in 20000
+do
+    mkdir $LOCAL_PATH/$STEP
+    echo "[starting: $LOCAL_PATH/$STEP]"
+    gsutil -m cp -r gs://$GCP_PATH/streaming_train_state_$STEP $LOCAL_PATH/$STEP/
+    mkdir $LOCAL_PATH/$STEP/pytorch/
+    python -m EasyLM.models.llama.convert_easylm_to_hf \
+        --load_checkpoint="trainstate_params::$LOCAL_PATH/$STEP/streaming_train_state_$STEP" \
+        --tokenizer_path='/shared/csnell/openllama_tokenizer/open_llama_3.model' \
+        --model_size='3b' \
+        --output_dir="$LOCAL_PATH/$STEP/pytorch"
+    echo "[finished: $LOCAL_PATH/$STEP]"
+done
+
+export GCP_PATH=young-nlp-us-e1/experiment_output/young/easy_lm/open_llama_2/aa2a8d212e6d42cfaaa0f55080683bf3
+export LOCAL_PATH=/shared/csnell/openllama/3B_v2
+for STEP in 100000 200000 300000 400000
+do
+    mkdir $LOCAL_PATH/$STEP
+    echo "[starting: $LOCAL_PATH/$STEP]"
+    gsutil -m cp -r gs://$GCP_PATH/streaming_train_state_$STEP $LOCAL_PATH/$STEP/
+    mkdir $LOCAL_PATH/$STEP/pytorch/
+    python -m EasyLM.models.llama.convert_easylm_to_hf \
+        --load_checkpoint="trainstate_params::$LOCAL_PATH/$STEP/streaming_train_state_$STEP" \
+        --tokenizer_path='/shared/csnell/openllama_tokenizer/open_llama_3.model' \
+        --model_size='3b' \
+        --output_dir="$LOCAL_PATH/$STEP/pytorch"
+    echo "[finished: $LOCAL_PATH/$STEP]"
+done
+
+export GCP_PATH=young-nlp-us-e1/experiment_output/young/easy_lm/open_llama_2/ce3f52926ba640a9a76b7411e348cfdc
+export LOCAL_PATH=/shared/csnell/openllama/3B_v2
+for STEP in 460000
+do
+    mkdir $LOCAL_PATH/$STEP
+    echo "[starting: $LOCAL_PATH/$STEP]"
+    gsutil -m cp -r gs://$GCP_PATH/streaming_train_state_$STEP $LOCAL_PATH/$STEP/
+    mkdir $LOCAL_PATH/$STEP/pytorch/
+    python -m EasyLM.models.llama.convert_easylm_to_hf \
+        --load_checkpoint="trainstate_params::$LOCAL_PATH/$STEP/streaming_train_state_$STEP" \
+        --tokenizer_path='/shared/csnell/openllama_tokenizer/open_llama_3.model' \
+        --model_size='3b' \
+        --output_dir="$LOCAL_PATH/$STEP/pytorch"
+    echo "[finished: $LOCAL_PATH/$STEP]"
+done
+
+# openllama 7B_v2
+
+export GCP_PATH=young-nlp-us-c2/experiment_output/young/easy_lm/open_llama_2/07184292a80f41e2bca1a1a4c1a120db
+export LOCAL_PATH=/shared/csnell/openllama/7B_v2
+for STEP in 20000
 do
     mkdir $LOCAL_PATH/$STEP
     echo "[starting: $LOCAL_PATH/$STEP]"
@@ -20,9 +72,9 @@ do
     echo "[finished: $LOCAL_PATH/$STEP]"
 done
 
-export GCP_PATH=young-nlp-us-e1/experiment_output/young/easy_lm/open_llama_data_comparison_1/39e8cadf271246b5bad93b0da3bd96c3
-export LOCAL_PATH=/shared/csnell/data_study/7B_v1_data
-for STEP in 22000
+export GCP_PATH=young-nlp-us-c2/experiment_output/young/easy_lm/open_llama_2/59699214d98947f1a7f5a2d163029698
+export LOCAL_PATH=/shared/csnell/openllama/7B_v2
+for STEP in 100000 200000 300000 400000 460000
 do
     mkdir $LOCAL_PATH/$STEP
     echo "[starting: $LOCAL_PATH/$STEP]"
@@ -35,6 +87,45 @@ do
         --output_dir="$LOCAL_PATH/$STEP/pytorch"
     echo "[finished: $LOCAL_PATH/$STEP]"
 done
+
+
+
+# 9/11/23
+
+# export PYTHONPATH="${PWD}/../:$PYTHONPATH"
+# conda activate JaxSeq2
+
+# export GCP_PATH=young-nlp-us-e1/experiment_output/young/easy_lm/open_llama_data_comparison_1/d496a4bd6cfc4d2692b6aeef34ba731d
+# export LOCAL_PATH=/shared/csnell/data_study/7B_v2_data
+# for STEP in 17600
+# do
+#     mkdir $LOCAL_PATH/$STEP
+#     echo "[starting: $LOCAL_PATH/$STEP]"
+#     gsutil -m cp -r gs://$GCP_PATH/streaming_train_state_$STEP $LOCAL_PATH/$STEP/
+#     mkdir $LOCAL_PATH/$STEP/pytorch/
+#     python -m EasyLM.models.llama.convert_easylm_to_hf \
+#         --load_checkpoint="trainstate_params::$LOCAL_PATH/$STEP/streaming_train_state_$STEP" \
+#         --tokenizer_path='/shared/csnell/openllama_tokenizer/open_llama_3.model' \
+#         --model_size='7b' \
+#         --output_dir="$LOCAL_PATH/$STEP/pytorch"
+#     echo "[finished: $LOCAL_PATH/$STEP]"
+# done
+
+# export GCP_PATH=young-nlp-us-e1/experiment_output/young/easy_lm/open_llama_data_comparison_1/39e8cadf271246b5bad93b0da3bd96c3
+# export LOCAL_PATH=/shared/csnell/data_study/7B_v1_data
+# for STEP in 22000
+# do
+#     mkdir $LOCAL_PATH/$STEP
+#     echo "[starting: $LOCAL_PATH/$STEP]"
+#     gsutil -m cp -r gs://$GCP_PATH/streaming_train_state_$STEP $LOCAL_PATH/$STEP/
+#     mkdir $LOCAL_PATH/$STEP/pytorch/
+#     python -m EasyLM.models.llama.convert_easylm_to_hf \
+#         --load_checkpoint="trainstate_params::$LOCAL_PATH/$STEP/streaming_train_state_$STEP" \
+#         --tokenizer_path='/shared/csnell/openllama_tokenizer/open_llama_3.model' \
+#         --model_size='7b' \
+#         --output_dir="$LOCAL_PATH/$STEP/pytorch"
+#     echo "[finished: $LOCAL_PATH/$STEP]"
+# done
 
 # 9/8/23
 
